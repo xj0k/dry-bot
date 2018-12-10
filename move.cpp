@@ -35,7 +35,7 @@ void BotCart::init()
 void BotCart::self_test()
 {
   debugln("BotCart self test.");
-  move_on(1000);
+  move_on(500);
 }
 
 void BotCart::stop()
@@ -105,7 +105,7 @@ void BotCart::turnaround_backwards()
 void BotCart::move_(bool dir, int mills)
 {
   static bool last_left_move = false;
-  bool left_comp = true;
+  bool left_comp = false;
 
   // debug("BotCart::move_  ");debugln(mills);
   // both motors should run simultaneously.
@@ -125,7 +125,7 @@ void BotCart::move_(bool dir, int mills)
     
     if(left_comp) {
       // debugln("make up for left motor.");
-      motor_drive(pin_dir_left,pin_pwm_left,dir,MOTOR_SPEED_SLOW,0,8);  
+      motor_drive(pin_dir_left,pin_pwm_right,dir,MOTOR_SPEED_SLOW,0,8);  
     }
   }
 }
@@ -148,8 +148,8 @@ void BotCart::backwards(int mills)
 void BotCart::motor_drive(int pinDir, int pinPWM, bool dir, unsigned int speed, int distance=0, int mills=0 )
 {
   // sadly, I have mounted the drives with wrong heading direction.So we have to reverse the intended direction.
-  // int hl = dir ? HIGH:LOW;  // HIGH & LOW are actually 1 and 0;
-  int hl = dir ? LOW:HIGH; 
+   int hl = dir ? HIGH:LOW;  // HIGH & LOW are actually 1 and 0;
+  //int hl = dir ? LOW:HIGH; 
 
   ENTER();
   // debug("mills:");debugln(mills);

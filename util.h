@@ -3,7 +3,7 @@
 #define _DRYBOT_UTIL_H_
 
 #define DEBUG
-//#define DEBUG_VERBOSE
+#define DEBUG_VERBOSE
 
 #if defined(ARDUINO) && (ARDUINO >= 100)
 #include <Arduino.h>
@@ -18,13 +18,18 @@
 #define ENTER() 
 #endif
 
-#if 1
+#ifdef DEBUG
 #define debug Serial.print
 #define debugln Serial.println
 #else 
+#if 0
 #define debug(_arg) \
   Serial.print(__FILE__);Serial.print(" "),Serial.print(__func__);Serial.print(" ");Serial.print(_arg)
 #define debugln(_arg) debug(_arg); Serial.println("")
+#else
+#define debug(_arg)
+#define debugln(_arg)
+#endif
 #endif
 
 

@@ -1,100 +1,106 @@
-
-// test No.4 small servo. without control panel.
-// test pass with mg90s.
-
 #include <Servo.h>
 
-const int pinServoFront = 8;
-const int pinServoBack = 9;
-
-// intial position of the arms.
-// 90-> straight, 180->up , 0 down.
-const int frontInitialPos = 10;
-// 180-> horizontal back, 90: vertical up
-const int backInitialPos = 180;  
-
-Servo servoFront;
-Servo servoBack;
-
-void setup() {
-  Serial.begin(9600);
-  Serial.println("Arm test begins");
+int pinFB = 8,
+  pinHL = 4,
+  pinClaw = 10,
+  pinSite = 9;
   
-  servoFront.attach(pinServoFront);
-  servoBack.attach(pinServoBack);
+Servo servoFB; // front and backwards
+Servo servoHL; // high and low
+Servo servoClaw,servoSite;
 
-  servoFront.write(frontInitialPos);
-  servoBack.write(backInitialPos);
-}
+void arm();
 
-unsigned int mcnt = 1;
-unsigned int tcnt = 0;
-void loop() {
- 
- // testServoBack();
- //testServoFront();
- if(tcnt < mcnt) {
-  Serial.print("doing test No.");
-  Serial.println(tcnt);
-  testClean();
-  tcnt++;
-  if(tcnt==mcnt) {
-    Serial.println("tests all done.");
-  }
- } else {
-  delay(1000); 
- }
-}
-
-void testClean()
+void setup()
 {
-  Serial.println("simulating floor clean motion.");
+  Serial.begin(9600);
+  Serial.println("servo arm test started.");
   /*
-   * Serial.println("first back to folded postion");
-  servoBack.write(backInitialPos);
-  servoFront.write(180);
-  delay(3000);
+  servoFB.attach(pinFB,530,2600);
+  servoHL.attach(pinHL,530,2600);
+  servoClaw.attach(pinClaw,530,2600);
+  servoSite.attach(pinSite,530,2600);
   */
+    servoFB.attach(pinFB,530,2600);
+  servoHL.attach(pinHL,530,2600);
+  servoClaw.attach(pinClaw);
+  servoSite.attach(pinSite,530,2600);
 
-  Serial.println("set to clean-ready postion");
-  servoBack.write(180);
-  servoFront.write(10);
-  delay(2000);
+}
 
-  Serial.println("cleaning...");
-  for(int i=0;i<3;i++) {
-    Serial.print(i);
-    Serial.print(",");
-    servoFront.write(25);
-    delay(500);
-    servoFront.write(10);
-    delay(500);
-  }
+void loop()
+{
+  return;
+  Serial.print("servo running");
+  Serial.print(" ");
+  Serial.println();
+  //armClaw();
+  armSite();
+   //testAll();
+}
 
-  Serial.println(" done!");
-  Serial.println("return to folded postion");
-  servoBack.write(backInitialPos);
-  servoFront.write(10);
-  delay(2000);
+void testAll()
+{
+  Serial.println("forwards & backwards.");
+  servoFB.write(180);
+  delay(1000);
+  servoFB.write(90);
+  delay(1000);
+//return;
+  Serial.println("high & low.");
+  servoHL.write(0);
+  delay(1000);
+  servoHL.write(90);
+   delay(1000);
+   return;
+   
+  Serial.println("spin hand.");
+  servoClaw.write(180);
+  delay(1000);
+  servoClaw.write(0);
+   delay(2000);
+
+  Serial.println("spin site.");
+  servoSite.write(90);
+  delay(1000);
+  servoSite.write(0);
+   delay(5000);
 }
 
 
-void testServoFront()
+void armSite()
 {
-  Serial.println("Running front arm test");
-  servoFront.write(frontInitialPos);
-  delay(500);  
-  servoFront.write(90);
-  delay(500);  
-  servoFront.write(180);
-  delay(500);
+  int starta=-60,enda=120;
+  Serial.println(starta);
+  servoSite.write( starta );
+  delay( 2000 );
+  Serial.println(enda);
+  servoSite.write( enda );
+  delay( 2000 );
 }
-void testServoBack()
+
+void armClaw()
 {
-  Serial.println("Running back arm test.");
-  servoBack.write(backInitialPos);
-  delay(1000);
-  // return;
-  servoBack.write(90);
-  delay(1000);
+  int starta=180,enda=0;
+  Serial.println(starta);
+  servoClaw.write( starta );
+  delay( 2000 );
+  Serial.println(enda);
+  servoClaw.write( enda );
+  delay( 2000 );
+}
+
+void armFB()
+{
+  servoFB.write( 90 );
+  delay( 2000 );
+  servoFB.write( 0 );
+  delay( 2000 );
+}
+void armHL()
+{
+  servoHL.write( 90 );
+  delay( 1000 );
+  servoHL.write( 0 );
+  delay( 1000 );
 }

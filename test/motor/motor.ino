@@ -2,11 +2,11 @@
 // Motor test with OpenJumper Motor controller shield (with L298P chipset)
 
 
-int pinDir1 = 4; // direction control for motor 1.
-int pinPWM1 = 5; // speed control for motor 1.
+int pinDir1 = 11; // direction control for motor 1.
+int pinPWM1 = 10; // speed control for motor 1.
 
-int pinDir2 = 7;
-int pinPWM2 = 6;
+int pinDir2 = 12;
+int pinPWM2 = 13;
 
 // slow, motor will not run under this speed.
 // It takes 1200mills to turn 90degrees with speed setting at 60.
@@ -25,17 +25,38 @@ unsigned int angle2mills(unsigned int angle)
   return (unsigned int)(angle*(float)(normal_turn_mills/90));
 }
 
+void tryAll()
+{
+  int i = 0;
+  for(i=1;i<16;i++) {
+    pinMode(i,OUTPUT);  
+  }
+  for(i=1;i<16;i++){
+      digitalWrite(i,HIGH);
+    analogWrite(i+1,100);
+    delay(1000);
+  }
+}
 void setup() 
 { 
+    //return;
     Serial.begin(9600);
+    Serial.println("motor test begin");
+    //tryAll();
+    //return;
+    
     pinMode(pinDir1, OUTPUT);  
     pinMode(pinDir2,OUTPUT); 
-    Serial.println("motor test begin");
+    
 } 
+
+
 
 void loop() 
 { 
-   return;
+  //return;
+   Serial.println("running");
+   
    test_speed3();
   // test_turn();
    // test_start_stop();
@@ -49,18 +70,20 @@ void test_speed3()
 {
 
   
-  motor1_drive_mills(true,62,0);
-  motor2_drive_mills(true,67,0);  
-  delay(500);
+  motor1_drive_mills(true,200,0);
+  motor2_drive_mills(true,200,0);  
+  delay(1500);
   motor_stop();
-
-  delay(2000);
-  motor1_drive_mills(false,62,0);
-  motor2_drive_mills(false,67,0);  
+  delay(3000);
+  return;
+  
+  delay(500);
+  motor1_drive_mills(false,200,0);
+  motor2_drive_mills(false,200,0);  
   delay(500);
   motor_stop();
   
-    delay(2000);
+    delay(500);
 
 }
 

@@ -8,7 +8,7 @@ static const int MAX_MOISTURE=2; // bigger than this, we've detected an wet area
 
 static const int moisture_degress = 100;
 static int initial_readout = 0;
-static int moisture_limit = 60;
+static int moisture_limit = 30;
 
 SensorSet::SensorSet(int pinIRLeft,int pinIRRight,
     int pinUltraSonicEcho,int pinUltraSonicTrig,
@@ -73,6 +73,7 @@ void SensorSet::moisture_read(st_moisture *st_m)
 bool SensorSet::wet_floor_detected()
 {
     ENTER();
+    //return(false);
     st_moisture st_m;
     moisture_read(&st_m);
     debugln(st_m.moisture);
@@ -116,8 +117,12 @@ unsigned int SensorSet::UltraSonic_distance()
   dist = pulseIn(pin_us_echo,HIGH)/58.00;
 
 #ifdef DEBUG_VERBOSE  
-  debug("US_read:");debugln(dist);
+  debug("UltraSonic_read:");debugln(dist);
 #endif
+    if(dist>200) {
+        debug("UltraSonic read a invalid value, ignore this read.");
+        return 0;
+    }
   
   return (unsigned int)dist;
 }

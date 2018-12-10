@@ -7,16 +7,23 @@
 class Cleaner
 {
   public:
-    Cleaner(int pinServoFront,int pinServoBack);
+    Cleaner(int pinServoFB,int pinServoHL,int pinServoHand,int pinServoSite);
+
     void init();
     void start_clean(int times);
     void end_clean();
+    void do_clean_auto(int mode);
 
     void self_test();
   private:
-    int pin_servo_front,pin_servo_back;
-    Servo servoFront;
-    Servo servoBack;
+    int pin_servo_fb,pin_servo_hl,pin_servo_hand,pin_servo_site;
+    Servo servoFB;
+    Servo servoHL;
+    Servo servoHand;
+    Servo servoSite;
+
+    void spin_hand_();
+    void fold_arm_();
 };
 
 #endif
